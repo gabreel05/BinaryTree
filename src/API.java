@@ -143,64 +143,73 @@ class ArvoreBinaria {
     public No remover(No raiz, No no) {
         if (raiz == null) {
             return null;
-        }
-
-        if (no.pegaIdade() == raiz.pegaIdade()) {
-            if (raiz.pegaEsquerda() == null && raiz.pegaDireita() == null) {
-                return null;
-            }
-
-            if (raiz.pegaEsquerda() == null) {
-                return raiz.pegaDireita();
-            }
-
-            if (raiz.pegaDireita() == null) {
-                return raiz.pegaEsquerda();
-            }
-        }
-
-        if (no.pegaIdade() < raiz.pegaIdade()) {
+        } else if (no.pegaIdade() < raiz.pegaIdade()) {
             raiz.mudaEsquerda(remover(raiz.pegaEsquerda(), no));
+        } else if (no.pegaIdade() > raiz.pegaIdade()) {
+            raiz.mudaDireita(remover(raiz.pegaDireita(), no));
+        } else if (no.pegaIdade() == raiz.pegaIdade()) {
+            if (raiz.pegaEsquerda() != null && raiz.pegaDireita() != null) {
+                int esq_max = encontraMaior(raiz.pegaEsquerda());
 
-            return raiz;
+                raiz.mudaIdade(esq_max);
+
+                raiz.mudaEsquerda(remover(raiz.pegaEsquerda(), new No(esq_max)));
+
+                return raiz;
+            }
         }
-        raiz.mudaDireita(remover(raiz.pegaDireita(), no));
+
+        else if (raiz.pegaEsquerda() != null) {
+            return raiz.pegaEsquerda();
+        }
+        else if (raiz.pegaDireita() != null) {
+            return raiz.pegaDireita();
+        }
+        else {
+            return null;
+        }
 
         return raiz;
-//        if (raiz == null) {
-//            return raiz;
-//        }
-//
-//        if (no.pegaIdade() < raiz.pegaIdade()) {
-//            raiz.mudaEsquerda(remover(raiz.pegaEsquerda(), no));
-//        } else if (no.pegaIdade() > raiz.pegaIdade()) {
-//            raiz.mudaDireita(remover(raiz.pegaDireita(), no));
-//        } else {
-//            if (raiz.pegaEsquerda() == null) {
-//                return raiz.pegaDireita();
-//            } else if (raiz.pegaDireita() == null) {
-//                return raiz.pegaEsquerda();
-//            }
-//
-//            raiz.pegaIdade() = encontra
-//        }
-//        // implementar
-//
-//        return null;
     }
 
-    public No removerMaior() {
-        
-        // implementar
-        
+    public No removerMaior(No pRaiz) {
+
+        if (pRaiz == null) {
+            return pRaiz;
+        }
+        No proximoNode = null;
+
+        //VERIFICA SE A DIREITA E DIFERENTE DE NULL E SETTA O PROXIMO NODE DA DIREITA ANTERIOR
+        if (pRaiz.pegaDireita() != null) {
+            proximoNode = pRaiz.pegaDireita();
+        }
+
+        //se meu filho não tem neto ele remove o filho
+        //(NAO SEI EXPLICAR APENAS FUNCIONA)
+
+        if (pRaiz.pegaDireita() != null && proximoNode.pegaDireita() == null) {
+            pRaiz.mudaDireita(null);
+        }
+        removerMaior(pRaiz.pegaDireita());
         return null;
     }
 
 
-    public No removerMenor() {
-        
-        // implementar
-        
+    public No removerMenor(No pRaiz) {
+        if (pRaiz == null) {
+            return pRaiz;
+        }
+
+        No proximoNode = null;
+        if (pRaiz.pegaEsquerda() != null) {
+            proximoNode = pRaiz.pegaEsquerda();
+        }
+
+        if (pRaiz.pegaDireita() != null && proximoNode.pegaEsquerda() == null) {
+            pRaiz.mudaEsquerda(null);
+        }
+
+        removerMenor(pRaiz.pegaEsquerda());
         return null;
     }
 
